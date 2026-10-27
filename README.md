@@ -1,8 +1,8 @@
-# kamani.cc
+# heena.ca
 
 My personal site. Built with React, TypeScript and Vite, and deployed to GitHub Pages with GitHub Actions.
 
-**Live:** [kamani.cc](https://kamani.cc)
+**Live:** [heena.ca](https://heena.ca)
 
 ## Run it locally
 

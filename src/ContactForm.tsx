@@ -19,7 +19,7 @@ export default function ContactForm() {
     }
     setError("");
     setState("sending");
-    const ok = await sendToInbox(`Message from ${name} via kamani.cc`, { name, email, message }).catch(() => false);
+    const ok = await sendToInbox(`Message from ${name} via heena.ca`, { name, email, message }).catch(() => false);
     setState(ok ? "sent" : "error");
     if (ok) form.reset();
   }
