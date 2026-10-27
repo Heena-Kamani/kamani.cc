@@ -206,4 +206,4 @@ export const now = {
 
 // Form submissions go to my inbox through Web3Forms (free). The key is safe to be public:
 // it only lets people send me a message, it can't read anything.
-export const WEB3FORMS_KEY = "";
+export const WEB3FORMS_KEY = "eed5e223-9472-4054-b3b2-85093c61597d";
