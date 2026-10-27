@@ -11,7 +11,7 @@ export async function sendToInbox(subject: string, fields: Record<string, string
   const res = await fetch("https://api.web3forms.com/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject, from_name: "heena.ca", ...fields }),
+    body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject, from_name: "heena.dev", ...fields }),
   });
   const data = (await res.json().catch(() => ({}))) as { success?: boolean };
   return res.ok && data.success === true;

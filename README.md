@@ -1,8 +1,8 @@
-# heena.ca
+# heena.dev
 
 My personal site. Built with React, TypeScript and Vite, and deployed to GitHub Pages with GitHub Actions.
 
-**Live:** [heena.ca](https://heena.ca)
+**Live:** [heena.dev](https://heena.dev)
 
 ## Run it locally
 
