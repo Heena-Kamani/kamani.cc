@@ -24,6 +24,10 @@ function useTheme() {
   });
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    // Match the phone's browser bar to the page
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) =>
+      m.setAttribute("content", theme === "dark" ? "#171412" : "#fbf8f4"),
+    );
     try {
       localStorage.setItem("theme", theme);
     } catch {

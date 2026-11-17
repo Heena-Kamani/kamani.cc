@@ -313,3 +313,51 @@ input[type="radio"] { accent-color: var(--accent); }
 /* Keep section titles clear of the sticky header when jumping from the menu */
 section[id] { scroll-margin-top: 72px; }
 
+/* ---------- Dark mode polish ---------- */
+:root { --shadow: rgb(40 25 15 / 0.35); --error: #b3261e; }
+:root[data-theme="dark"] { --shadow: rgb(0 0 0 / 0.7); --error: #ff8a80; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --shadow: rgb(0 0 0 / 0.7); --error: #ff8a80; }
+}
+.form-error { color: var(--error); }
+@media (min-width: 900px) {
+  /* Frame uses the soft chip colour so diagram boxes stand out in both themes */
+  .stage-frame { background: var(--chip); box-shadow: 0 24px 60px -30px var(--shadow); }
+  .work-layout .case.is-active, .work-layout .case.is-open { box-shadow: 0 16px 40px -28px var(--shadow); }
+}
+.theme { transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.theme:active { transform: rotate(40deg) scale(0.92); }
+html { transition: background-color 0.3s ease; }
+body { transition: background-color 0.3s ease, color 0.3s ease; }
+
+/* ---------- Phones ---------- */
+.top nav { -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.top nav::-webkit-scrollbar, .filters::-webkit-scrollbar { display: none; }
+@media (max-width: 640px) {
+  /* Two-row header: name and theme on top, menu underneath, swipeable */
+  .top { flex-wrap: wrap; row-gap: 4px; padding-top: 12px; padding-bottom: 8px; }
+  .top nav { order: 3; width: 100%; overflow-x: auto; gap: 22px; padding-bottom: 4px; }
+  .top nav a { display: inline-block; flex: none; font-size: 15px; padding: 6px 0; }
+  .top nav .theme { position: absolute; top: 12px; right: 16px; width: 40px; height: 40px; }
+  .top { position: sticky; }
+  section[id] { scroll-margin-top: 104px; }
+
+  /* Filters on one swipeable row */
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px 24px; padding: 0 16px; }
+  .filters button { flex: none; padding: 9px 16px; }
+
+  .hero h1 { font-size: 38px; }
+  .lede { font-size: 17px; }
+  .section { padding: 44px 0; }
+  .section h2 { font-size: 28px; margin-bottom: 20px; }
+  .section-head { align-items: center; }
+  .case { padding: 20px; border-radius: 16px; }
+  .case-title { font-size: 21px; }
+  .visual { padding: 10px 8px 6px; }
+  .visual svg { max-height: none; }
+  .actions .btn { flex: 1 1 auto; text-align: center; padding: 13px 18px; }
+  .actions .btn.ghost { flex-basis: 100%; }
+  .contact .links { flex-wrap: wrap; gap: 14px 20px; }
+  .contact-form .btn { width: 100%; }
+  .dialog { padding: 24px 20px; }
+}
