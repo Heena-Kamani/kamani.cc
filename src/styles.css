@@ -263,6 +263,40 @@ input[type="radio"] { accent-color: var(--accent); }
 .visual svg > :nth-child(6) { animation-delay: 0.33s !important; }
 .visual svg > :nth-child(n+7) { animation-delay: 0.4s !important; }
 
+/* Picture in picture: on wide screens the diagram stays pinned
+   while the stories scroll past, and swaps to match the one you're reading */
+.stage { display: none; }
+@media (min-width: 900px) {
+  .work-layout { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px; align-items: start; }
+  .stage { display: block; position: sticky; top: 96px; }
+  .stage-frame {
+    position: relative; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--line);
+    box-shadow: 0 24px 60px -30px rgb(40 25 15 / 0.35);
+  }
+  .stage-item {
+    position: absolute; inset: 0; display: grid; place-items: center; padding: 28px;
+    opacity: 0; transform: scale(0.96); transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .stage-item.active { opacity: 1; transform: none; }
+  .stage-item .visual { width: 100%; margin: 0; background: transparent; padding: 0; }
+  .stage-item .visual svg { max-height: none; }
+  .stage-item .visual figcaption { text-align: center; font-size: 13px; margin-top: 14px; }
+  .stage-caption { margin-top: 14px; font-size: 14px; color: var(--muted); display: flex; gap: 12px; align-items: baseline; }
+  .stage-count { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 600; }
+
+  /* Inside the scrolling list the cards drop their own diagram, since the stage shows it */
+  .work-layout .case { display: block; padding: 26px 28px; }
+  .work-layout .case .visual { display: none; }
+  .work-layout .cases { gap: 18px; padding-bottom: 30vh; }
+  .work-layout .case { opacity: 0.55; transition: opacity 0.4s ease, border-color 0.3s ease, transform 0.4s ease, box-shadow 0.4s ease; }
+  .work-layout .case.in { opacity: 0.55; }
+  .work-layout .case.is-active, .work-layout .case.is-open {
+    opacity: 1; border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    box-shadow: 0 16px 40px -28px rgb(40 25 15 / 0.4);
+  }
+}
+
 /* Small touches */
 .case-more::after { content: " →"; display: inline-block; transition: transform 0.2s ease; }
 .case:hover .case-more::after { transform: translateX(4px); }

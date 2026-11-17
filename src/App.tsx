@@ -82,9 +82,52 @@ function ScrollProgress() {
   return <div className="progress" style={{ transform: `scaleX(${p})` }} aria-hidden="true" />;
 }
 
-function CaseCard({ c, open, onToggle }: { c: CaseStudy; open: boolean; onToggle: () => void }) {
+// Works out which project card is in the middle of the screen, so the pinned picture can follow along.
+function useActiveCase(ids: string[]) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    setActive(ids[0]);
+    if (!("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive((e.target as HTMLElement).dataset.id!);
+        }),
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    ids.forEach((id) => {
+      const el = document.querySelector(`[data-id="${id}"]`);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, [ids.join(",")]);
+  return active;
+}
+
+function Stage({ ids, active }: { ids: string[]; active: string }) {
+  const c = caseStudies.find((x) => x.id === active);
   return (
-    <article className={`case reveal ${open ? "is-open" : ""}`}>
+    <div className="stage" aria-hidden="true">
+      <div className="stage-frame">
+        {ids.map((id) => (
+          <div key={id} className={`stage-item ${id === active ? "active" : ""}`}>
+            <Visual id={id} />
+          </div>
+        ))}
+      </div>
+      <p className="stage-caption">
+        <span className="stage-count">
+          {String(ids.indexOf(active) + 1).padStart(2, "0")} / {String(ids.length).padStart(2, "0")}
+        </span>
+        {c?.title}
+      </p>
+    </div>
+  );
+}
+
+function CaseCard({ c, open, onToggle, active }: { c: CaseStudy; open: boolean; onToggle: () => void; active: boolean }) {
+  return (
+    <article className={`case reveal ${open ? "is-open" : ""} ${active ? "is-active" : ""}`} data-id={c.id}>
       <Visual id={c.id} />
       <div className="case-main">
       <button className="case-head" onClick={onToggle} aria-expanded={open} aria-controls={`case-${c.id}`}>
@@ -140,6 +183,8 @@ export default function App() {
     () => caseStudies.filter((c) => filter === "all" || c.tracks.includes(filter)),
     [filter],
   );
+  const ids = shown.map((c) => c.id);
+  const active = useActiveCase(ids);
   useReveal([filter]);
 
   return (
@@ -219,10 +264,19 @@ export default function App() {
               ))}
             </div>
           </div>
-          <div className="cases">
-            {shown.map((c) => (
-              <CaseCard key={c.id} c={c} open={openId === c.id} onToggle={() => setOpenId(openId === c.id ? null : c.id)} />
-            ))}
+          <div className="work-layout">
+            <Stage ids={ids} active={active} />
+            <div className="cases">
+              {shown.map((c) => (
+                <CaseCard
+                  key={c.id}
+                  c={c}
+                  active={c.id === active}
+                  open={openId === c.id}
+                  onToggle={() => setOpenId(openId === c.id ? null : c.id)}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
