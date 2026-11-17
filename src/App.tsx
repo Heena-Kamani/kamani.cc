@@ -33,9 +33,58 @@ function useTheme() {
   return [theme, () => setTheme((t) => (t === "dark" ? "light" : "dark"))] as const;
 }
 
+const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Fade things in as they scroll into view.
+function useReveal(deps: unknown[]) {
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>(".reveal:not(.in)");
+    if (!("IntersectionObserver" in window) || reduceMotion()) {
+      els.forEach((el) => el.classList.add("in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}
+
+// Thin bar at the top that fills as you scroll down the page.
+function ScrollProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        setP(max > 0 ? window.scrollY / max : 0);
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  return <div className="progress" style={{ transform: `scaleX(${p})` }} aria-hidden="true" />;
+}
+
 function CaseCard({ c, open, onToggle }: { c: CaseStudy; open: boolean; onToggle: () => void }) {
   return (
-    <article className={`case ${open ? "is-open" : ""}`}>
+    <article className={`case reveal ${open ? "is-open" : ""}`}>
       <Visual id={c.id} />
       <div className="case-main">
       <button className="case-head" onClick={onToggle} aria-expanded={open} aria-controls={`case-${c.id}`}>
@@ -91,9 +140,11 @@ export default function App() {
     () => caseStudies.filter((c) => filter === "all" || c.tracks.includes(filter)),
     [filter],
   );
+  useReveal([filter]);
 
   return (
     <>
+      <ScrollProgress />
       <a className="skip" href="#work">
         Skip to work
       </a>
@@ -115,14 +166,16 @@ export default function App() {
 
       <main>
         <section className="hero">
-          <p className="eyebrow">
+          <p className="eyebrow rise" style={{ animationDelay: "0ms" }}>
             {profile.role} · {profile.location}
           </p>
-          <h1>
+          <h1 className="rise" style={{ animationDelay: "120ms" }}>
             Bonjour, I'm Heena. <span className="soft">{profile.headline}</span>
           </h1>
-          <p className="lede">{profile.intro}</p>
-          <div className="actions">
+          <p className="lede rise" style={{ animationDelay: "260ms" }}>
+            {profile.intro}
+          </p>
+          <div className="actions rise" style={{ animationDelay: "400ms" }}>
             <a className="btn primary" href="#work">
               See my work
             </a>
@@ -140,7 +193,7 @@ export default function App() {
             <h2>Now</h2>
             <span className="soft small">Updated {now.updated}</span>
           </div>
-          <dl className="now-list">
+          <dl className="now-list reveal">
             {now.items.map((n) => (
               <div key={n.label}>
                 <dt>{n.label}</dt>
@@ -174,10 +227,10 @@ export default function App() {
         </section>
 
         <section id="experience" className="section">
-          <h2>Experience</h2>
+          <h2 className="reveal">Experience</h2>
           <ol className="timeline">
             {experience.map((e) => (
-              <li key={e.role + e.org}>
+              <li key={e.role + e.org} className="reveal">
                 <div className="tl-when">{e.when}</div>
                 <div>
                   <h3>
@@ -195,10 +248,10 @@ export default function App() {
         </section>
 
         <section className="section">
-          <h2>What I work with</h2>
+          <h2 className="reveal">What I work with</h2>
           <div className="skills">
             {skills.map((g) => (
-              <div key={g.group}>
+              <div key={g.group} className="reveal">
                 <h3>{g.group}</h3>
                 <ul className="chips">
                   {g.items.map((s) => (
@@ -210,24 +263,24 @@ export default function App() {
           </div>
         </section>
 
-        <section id="about" className="section about">
-          <h2>About me</h2>
-          <p>
+        <section id="about" className="section about ">
+          <h2 className="reveal">About me</h2>
+          <p className="reveal">
             I wanted to build things ever since I watched Big Hero 6. Hiro had a garage full of half-finished inventions, and Baymax was a robot
             whose whole job was taking care of people. I know it's a cliché, but it stuck with me: technology at its best quietly looks after the
             people using it. That's what took me into Computing Science at the University of Alberta.
           </p>
-          <p>
+          <p className="reveal">
             I still learn the way Hiro did, by building something, watching it break and figuring out why. These days that's dashboards,
             automations and apps for real teams, and I'm always picking up whatever the next problem needs.
           </p>
-          <p>
+          <p className="reveal">
             Outside of work I run networking events for students through the International Students' Association, and I speak five languages.
           </p>
         </section>
 
         <section id="contact" className="section contact">
-          <h2>Say hi</h2>
+          <h2 className="reveal">Say hi</h2>
           <p>I'm open to analyst, BI and developer roles in Edmonton or remote. Send me a note and I'll reply from my own inbox.</p>
           <ContactForm />
           <p className="links">

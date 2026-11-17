@@ -212,3 +212,70 @@ form legend { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
   .case .visual { margin: 0; }
 }
 input[type="radio"] { accent-color: var(--accent); }
+
+/* ---------- Motion and reading comfort ---------- */
+
+/* Reading: shorter lines and a touch more room */
+.lede, .about p, .contact > p { max-width: 62ch; }
+.case-summary, .case-body p, .case-body li { max-width: 64ch; }
+.case-body li + li { margin-top: 4px; }
+.timeline ul li + li { margin-top: 4px; }
+
+/* Scroll progress bar */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 50;
+  background: var(--accent); transform-origin: 0 50%; transform: scaleX(0);
+}
+
+/* Sticky header with a soft blur once you scroll */
+.top {
+  position: sticky; top: 0; z-index: 20; max-width: none;
+  padding-left: max(24px, calc((100% - 960px) / 2 + 24px));
+  padding-right: max(24px, calc((100% - 960px) / 2 + 24px));
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+
+/* Hero: lines rise in one after another */
+.rise { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* Fade up on scroll */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+.timeline .reveal:nth-child(2), .skills .reveal:nth-child(2) { transition-delay: 0.08s; }
+.timeline .reveal:nth-child(3), .skills .reveal:nth-child(3) { transition-delay: 0.16s; }
+.timeline .reveal:nth-child(4), .skills .reveal:nth-child(4) { transition-delay: 0.24s; }
+
+/* Diagrams draw themselves in, piece by piece */
+.visual svg > :not(defs) { opacity: 0; transform: translateY(6px); transform-box: fill-box; }
+.in .visual svg > :not(defs), .stage-item.active .visual svg > :not(defs) {
+  animation: piece 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes piece { to { opacity: 1; transform: none; } }
+.visual svg > :nth-child(2) { animation-delay: 0.05s !important; }
+.visual svg > :nth-child(3) { animation-delay: 0.12s !important; }
+.visual svg > :nth-child(4) { animation-delay: 0.19s !important; }
+.visual svg > :nth-child(5) { animation-delay: 0.26s !important; }
+.visual svg > :nth-child(6) { animation-delay: 0.33s !important; }
+.visual svg > :nth-child(n+7) { animation-delay: 0.4s !important; }
+
+/* Small touches */
+.case-more::after { content: " →"; display: inline-block; transition: transform 0.2s ease; }
+.case:hover .case-more::after { transform: translateX(4px); }
+.case.is-open .case-more::after { content: ""; }
+.case-body { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .case-body { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .visual svg > :not(defs) { opacity: 1; transform: none; animation: none !important; }
+  .stage-item { transition: none; }
+}
+
+/* Keep section titles clear of the sticky header when jumping from the menu */
+section[id] { scroll-margin-top: 72px; }
+
