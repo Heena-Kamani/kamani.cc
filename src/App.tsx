@@ -39,19 +39,20 @@ function useTheme() {
 
 const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Fade things in as they scroll into view.
+// Fade things in as they scroll into view. Uses a data attribute, not a class,
+// so React re-rendering a card's className can't hide it again.
 function useReveal(deps: unknown[]) {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".reveal:not(.in)");
+    const els = document.querySelectorAll<HTMLElement>(".reveal:not([data-in])");
     if (!("IntersectionObserver" in window) || reduceMotion()) {
-      els.forEach((el) => el.classList.add("in"));
+      els.forEach((el) => (el.dataset.in = ""));
       return;
     }
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            e.target.classList.add("in");
+            (e.target as HTMLElement).dataset.in = "";
             io.unobserve(e.target);
           }
         }),

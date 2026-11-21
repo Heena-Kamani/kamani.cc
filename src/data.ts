@@ -81,19 +81,20 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "aislopguard",
     title: "AISlopGuard: spotting AI-generated images",
-    where: "HackED 2026 hackathon",
+    where: "HackED 2026 hackathon (team of 4)",
     when: "February 2026",
     tracks: ["software"],
     summary: "A React Native app with a FastAPI backend, built with my team in 48 hours.",
     problem:
-      "AI-generated images and videos are getting hard to tell apart from real ones, and we wanted a quick way to check on your phone.",
+      "AI-generated images are getting hard to tell apart from real ones, and we wanted a quick way to check one on your phone.",
     did: [
-      "Worked on the mobile UI and asynchronous API handling in React Native",
-      "Connected the app to a FastAPI backend and on-device inference with ONNX Runtime",
-      "Designed evaluation metrics and regression tests so the model stayed accurate across updates",
+      "Fine-tuned a MobileNetV3 model on the CIFAKE dataset of real and AI-generated images",
+      "Evaluated it after every epoch on F1, precision, recall and AUC",
+      "Exported the trained model to ONNX for the backend",
+      "Connected the app to the FastAPI backend and its scoring API",
     ],
     result: "Shipped a working app in 48 hours.",
-    stack: ["React Native", "Expo", "FastAPI", "Python", "ONNX Runtime"],
+    stack: ["MobileNetV3", "ONNX", "FastAPI", "Python", "React Native", "Expo"],
     links: [{ label: "Code", href: "https://github.com/runtimeTerrors-HackED/RuntimeTerrors_AISlopGuard" }],
   },
   {
