@@ -79,6 +79,25 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Power BI", "Tableau", "ArcGIS", "FME", "ETL"],
   },
   {
+    id: "topaz",
+    title: "Topaz Portal: quotes my clients can open and accept",
+    where: "Personal project for my design studio",
+    when: "2026",
+    tracks: ["software"],
+    summary: "A Rails 8 portal where I put together quotes and clients review and accept them from a private link.",
+    problem:
+      "I wanted one place to build quotes for my studio, where a client can see exactly what they're paying for and accept it, and where an accepted quote can't quietly change afterwards.",
+    did: [
+      "Built clients, quotes and line items with GST in Rails 8",
+      "Locked each quote once the client accepts it, so what they agreed to stays on record",
+      "Stored money in cents and tax in basis points so the math stays exact",
+      "Wrote more than 20 automated tests as I went",
+      "Learned Rails through this project, building it with an AI coding assistant",
+    ],
+    result: "The core flow works: build a quote, share the private link, and it locks when the client accepts. It isn't online yet.",
+    stack: ["Ruby on Rails 8", "Ruby", "Automated tests"],
+  },
+  {
     id: "aislopguard",
     title: "AISlopGuard: spotting AI-generated images",
     where: "HackED 2026 hackathon (team of 4)",

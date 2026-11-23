@@ -115,6 +115,7 @@ const visuals: Record<string, { title: string; body: () => React.ReactElement }>
   "311": { title: "How a 311 request gets routed", body: () => <Flow steps={["311 request", "REST API", "Local LLM", "Right staff"]} accentIndex={2} /> },
   duplicates: { title: "One asset, recorded many times", body: Duplicates },
   dashboards: { title: "Request in, dashboard out", body: Bars },
+  topaz: { title: "Quote to agreement", body: () => <Flow steps={["New quote", "Private link", "Accepted", "Locked"]} accentIndex={3} /> },
   aislopguard: { title: "Photo to verdict", body: () => <Flow steps={["Phone app", "FastAPI", "ONNX model", "Real or AI?"]} accentIndex={2} /> },
   crowdsim: { title: "Physics where the crowd is", body: Crowd },
   socialdist: { title: "Request path", body: () => <Flow steps={["Browser", "REST API", "Backend", "SQL"]} accentIndex={1} /> },
