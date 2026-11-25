@@ -358,7 +358,7 @@ export default function App() {
 
       <footer className="foot">
         <p>
-          Designed and built by me with React and TypeScript.
+          Designed and built by me with React and TypeScript. A GitHub Actions workflow deploys it on every push to main.
         </p>
       </footer>
       <ResumeRequest open={askResume} onClose={() => setAskResume(false)} />

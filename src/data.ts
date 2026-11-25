@@ -188,7 +188,7 @@ export const experience = [
 ];
 
 export const skills: { group: string; items: string[] }[] = [
-  { group: "Build", items: ["TypeScript", "React", "React Native", "Python", "Java", "SQL", "FastAPI", "REST APIs", "Git"] },
+  { group: "Build", items: ["TypeScript", "React", "React Native", "Python", "Java", "SQL", "Ruby on Rails", "FastAPI", "REST APIs", "Git", "GitHub Actions"] },
   { group: "Analyze", items: ["Power BI (DAX, Power Query)", "Tableau", "Excel", "ArcGIS", "FME", "ETL"] },
   { group: "Automate", items: ["Power Automate", "Microsoft Teams", "SharePoint", "SAP S/4HANA"] },
   { group: "Speak", items: ["English", "French", "Hindi", "Gujarati", "Swahili", "Spanish (learning)"] },
